@@ -58,11 +58,7 @@ function pointNearTool (eventData, toolIndex) {
   const isPointNearTool = pointNearHandle(eventData, toolIndex);
 
   // JPETTS - if returns index 0, set true (fails first condition as 0 is falsy).
-  if (isPointNearTool || isPointNearTool === 0) {
-    return true;
-  }
-
-  return false;
+  return isPointNearTool || isPointNearTool === 0;
 }
 
 function pointNearHandle (eventData, toolIndex) {

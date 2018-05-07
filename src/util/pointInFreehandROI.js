@@ -1,9 +1,5 @@
 function isEnclosedY (yp, y1, y2) {
-  if ((y1 < yp && yp < y2) || (y2 < yp && yp < y1)) {
-    return true;
-  }
-
-  return false;
+  return (y1 < yp && yp < y2) || (y2 < yp && yp < y1);
 }
 
 function isLineRightOfPoint (point, lp1, lp2) {
@@ -22,11 +18,7 @@ function isLineRightOfPoint (point, lp1, lp2) {
 
   // If the lp1.x and lp2.x enclose point.x check gradient of line and see if
   // Point is above or below the line to calculate if it inside.
-  if (Math.sign(lPointY.gradient) * point.y > lPointY.value) {
-    return true;
-  }
-
-  return false;
+  return Math.sign(lPointY.gradient) * point.y > lPointY.value;
 }
 
 function lineSegmentAtPoint (point, lp1, lp2) {
@@ -63,10 +55,5 @@ export default function (dataHandles, location) {
 }
 
 function rayFromPointCrosssesLine (point, handleI, handleJ) {
-  if (isEnclosedY(point.y, handleI.y, handleJ.y) && isLineRightOfPoint(point, handleI, handleJ)) {
-
-    return true;
-  }
-
-  return false;
+  return isEnclosedY(point.y, handleI.y, handleJ.y) && isLineRightOfPoint(point, handleI, handleJ);
 }

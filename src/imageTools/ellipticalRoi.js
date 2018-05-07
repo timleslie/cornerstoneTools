@@ -76,11 +76,7 @@ function pointNearEllipse (element, data, coords, distance) {
   const pointInMinorEllipse = pointInEllipse(minorEllipse, coords);
   const pointInMajorEllipse = pointInEllipse(majorEllipse, coords);
 
-  if (pointInMajorEllipse && !pointInMinorEllipse) {
-    return true;
-  }
-
-  return false;
+  return pointInMajorEllipse && !pointInMinorEllipse;
 }
 
 function pointNearTool (element, data, coords) {
