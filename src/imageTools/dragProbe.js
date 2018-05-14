@@ -9,6 +9,7 @@ import getRGBPixels from '../util/getRGBPixels.js';
 import calculateSUV from '../util/calculateSUV.js';
 import isMouseButtonEnabled from '../util/isMouseButtonEnabled.js';
 import { getToolOptions } from '../toolOptions.js';
+import setShadow from '../util/setShadow.js';
 
 const toolType = 'dragProbe';
 
@@ -28,12 +29,7 @@ function defaultStrategy (eventData) {
   const config = dragProbe.getConfiguration();
 
   context.save();
-
-  if (config && config.shadow) {
-    context.shadowColor = config.shadowColor || '#000000';
-    context.shadowOffsetX = config.shadowOffsetX || 1;
-    context.shadowOffsetY = config.shadowOffsetY || 1;
-  }
+  setShadow(context, config);
 
   const x = Math.round(eventData.currentPoints.image.x);
   const y = Math.round(eventData.currentPoints.image.y);
@@ -95,12 +91,7 @@ function minimalStrategy (eventData) {
   const config = dragProbe.getConfiguration();
 
   context.save();
-
-  if (config && config.shadow) {
-    context.shadowColor = config.shadowColor || '#000000';
-    context.shadowOffsetX = config.shadowOffsetX || 1;
-    context.shadowOffsetY = config.shadowOffsetY || 1;
-  }
+  setShadow(context, config);
 
   const seriesModule = cornerstone.metaData.get('generalSeriesModule', image.imageId);
   let modality;

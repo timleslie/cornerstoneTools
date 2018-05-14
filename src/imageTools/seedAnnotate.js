@@ -15,6 +15,7 @@ import pointInsideBoundingBox from '../util/pointInsideBoundingBox.js';
 import drawLinkedTextBox from '../util/drawLinkedTextBox.js';
 import { addToolState, removeToolState, getToolState } from '../stateManagement/toolState.js';
 import { getToolOptions } from '../toolOptions.js';
+import setShadow from '../util/setShadow.js';
 
 const toolType = 'seedAnnotate';
 
@@ -148,12 +149,7 @@ function onImageRendered (e) {
 
   for (let i = 0; i < toolData.data.length; i++) {
     context.save();
-
-    if (config && config.shadow) {
-      context.shadowColor = config.shadowColor || '#000000';
-      context.shadowOffsetX = config.shadowOffsetX || 1;
-      context.shadowOffsetY = config.shadowOffsetY || 1;
-    }
+    setShadow(context, config);
 
     const data = toolData.data[i];
 

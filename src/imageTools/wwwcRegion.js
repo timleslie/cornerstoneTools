@@ -7,6 +7,7 @@ import getLuminance from '../util/getLuminance.js';
 import isMouseButtonEnabled from '../util/isMouseButtonEnabled.js';
 import { setToolOptions, getToolOptions } from '../toolOptions.js';
 import clip from '../util/clip.js';
+import setShadow from '../util/setShadow.js';
 
 const toolType = 'wwwcRegion';
 
@@ -250,12 +251,7 @@ function onImageRendered (e) {
 
   // Draw the rectangle
   context.save();
-
-  if (config && config.shadow) {
-    context.shadowColor = config.shadowColor || '#000000';
-    context.shadowOffsetX = config.shadowOffsetX || 1;
-    context.shadowOffsetY = config.shadowOffsetY || 1;
-  }
+  setShadow(context, config);
 
   context.beginPath();
   context.strokeStyle = color;
