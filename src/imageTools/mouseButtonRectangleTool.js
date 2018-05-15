@@ -144,16 +144,14 @@ export default function (mouseToolInterface, preventHandleOutsideImage) {
     };
 
     if (toolData !== undefined && mouseToolInterface.pointInsideRect !== undefined) {
-      for (i = 0; i < toolData.data.length; i++) {
-        data = toolData.data[i];
-        if (mouseToolInterface.pointInsideRect(eventData.element, data, coords)) {
-          element.removeEventListener(EVENTS.MOUSE_MOVE, mouseMoveCallback);
-          moveAllHandles(e, data, toolData, toolType, opt, handleDoneMove);
-          element.addEventListener(EVENTS.MOUSE_MOVE, mouseMoveCallback);
-          e.stopImmediatePropagation();
+      data = toolData.data.find((d) => (mouseToolInterface.pointInsideRect(eventData.element, d, coords)));
+      if (data) {
+        element.removeEventListener(EVENTS.MOUSE_MOVE, mouseMoveCallback);
+        moveAllHandles(e, data, toolData, toolType, opt, handleDoneMove);
+        element.addEventListener(EVENTS.MOUSE_MOVE, mouseMoveCallback);
+        e.stopImmediatePropagation();
 
-          return false;
-        }
+        return false;
       }
     }
   }

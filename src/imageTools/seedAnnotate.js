@@ -264,7 +264,6 @@ function doubleClickCallback (e) {
   const eventData = e.detail;
   const cornerstone = external.cornerstone;
   const element = eventData.element;
-  let data;
   const options = getToolOptions(toolType, element);
 
   if (!isMouseButtonEnabled(eventData.which, options.mouseButtonMask)) {
@@ -292,22 +291,19 @@ function doubleClickCallback (e) {
     return;
   }
 
-  for (let i = 0; i < toolData.data.length; i++) {
-    data = toolData.data[i];
-    if (pointNearTool(element, data, coords) ||
-            pointInsideBoundingBox(data.handles.textBox, coords)) {
+  const data = toolData.data.find((d) => (
+    pointNearTool(element, d, coords) || pointInsideBoundingBox(d.handles.textBox, coords)));
 
-      data.active = true;
-      cornerstone.updateImage(element);
-      // Allow relabelling via a callback
-      config.changeTextCallback(data, eventData, doneChangingTextCallback);
+  if (data) {
+    data.active = true;
+    cornerstone.updateImage(element);
+    // Allow relabelling via a callback
+    config.changeTextCallback(data, eventData, doneChangingTextCallback);
 
-      e.stopImmediatePropagation();
+    e.stopImmediatePropagation();
 
-      return false;
-    }
+    return false;
   }
-
   e.preventDefault();
   e.stopPropagation();
 }
@@ -316,7 +312,6 @@ function pressCallback (e) {
   const eventData = e.detail;
   const cornerstone = external.cornerstone;
   const element = eventData.element;
-  let data;
 
   function doneChangingTextCallback (data, updatedText, deleteTool) {
     console.log('pressCallback doneChangingTextCallback');
@@ -357,24 +352,23 @@ function pressCallback (e) {
     return false;
   }
 
-  for (let i = 0; i < toolData.data.length; i++) {
-    data = toolData.data[i];
-    if (pointNearTool(element, data, coords) ||
-          pointInsideBoundingBox(data.handles.textBox, coords)) {
-      data.active = true;
-      cornerstone.updateImage(element);
+  const data = toolData.data.find((d) => (
+    pointNearTool(element, d, coords) || pointInsideBoundingBox(d.handles.textBox, coords)));
 
-      element.removeEventListener(EVENTS.TOUCH_START, seedAnnotateTouch.touchStartCallback);
-      element.removeEventListener(EVENTS.TOUCH_START_ACTIVE, seedAnnotateTouch.touchDownActivateCallback);
-      element.removeEventListener(EVENTS.TAP, seedAnnotateTouch.tapCallback);
+  if (data) {
+    data.active = true;
+    cornerstone.updateImage(element);
 
-      // Allow relabelling via a callback
-      config.changeTextCallback(data, eventData, doneChangingTextCallback);
+    element.removeEventListener(EVENTS.TOUCH_START, seedAnnotateTouch.touchStartCallback);
+    element.removeEventListener(EVENTS.TOUCH_START_ACTIVE, seedAnnotateTouch.touchDownActivateCallback);
+    element.removeEventListener(EVENTS.TAP, seedAnnotateTouch.tapCallback);
 
-      e.stopImmediatePropagation();
+    // Allow relabelling via a callback
+    config.changeTextCallback(data, eventData, doneChangingTextCallback);
 
-      return false;
-    }
+    e.stopImmediatePropagation();
+
+    return false;
   }
 
   e.preventDefault();

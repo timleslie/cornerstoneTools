@@ -149,7 +149,6 @@ function doubleClickCallback (e) {
   const eventData = e.detail;
   const cornerstone = external.cornerstone;
   const element = eventData.element;
-  let data;
   const options = getToolOptions(toolType, element);
 
   if (!isMouseButtonEnabled(eventData.which, options.mouseButtonMask)) {
@@ -181,25 +180,24 @@ function doubleClickCallback (e) {
     return;
   }
 
-  for (let i = 0; i < toolData.data.length; i++) {
-    data = toolData.data[i];
-    if (pointNearTool(element, data, coords)) {
-      data.active = true;
-      cornerstone.updateImage(element);
+  const data = toolData.data.find((d) => pointNearTool(element, d, coords));
 
-      element.removeEventListener(EVENTS.MOUSE_MOVE, textMarker.mouseMoveCallback);
-      element.removeEventListener(EVENTS.MOUSE_DOWN, textMarker.mouseDownCallback);
-      element.removeEventListener(EVENTS.MOUSE_DOWN_ACTIVATE, textMarker.mouseDownActivateCallback);
-      element.removeEventListener(EVENTS.MOUSE_DOUBLE_CLICK, textMarker.mouseDoubleClickCallback);
-      // Allow relabelling via a callback
-      config.changeTextCallback(data, eventData, doneChangingTextCallback);
+  if (data) {
+    data.active = true;
+    cornerstone.updateImage(element);
 
-      e.stopImmediatePropagation();
-      e.preventDefault();
-      e.stopPropagation();
+    element.removeEventListener(EVENTS.MOUSE_MOVE, textMarker.mouseMoveCallback);
+    element.removeEventListener(EVENTS.MOUSE_DOWN, textMarker.mouseDownCallback);
+    element.removeEventListener(EVENTS.MOUSE_DOWN_ACTIVATE, textMarker.mouseDownActivateCallback);
+    element.removeEventListener(EVENTS.MOUSE_DOUBLE_CLICK, textMarker.mouseDoubleClickCallback);
+    // Allow relabelling via a callback
+    config.changeTextCallback(data, eventData, doneChangingTextCallback);
 
-      return;
-    }
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    e.stopPropagation();
+
+    return;
   }
 
   e.preventDefault();
@@ -210,7 +208,6 @@ function touchPressCallback (e) {
   const eventData = e.detail;
   const cornerstone = external.cornerstone;
   const element = eventData.element;
-  let data;
 
   function doneChangingTextCallback (data, updatedText, deleteTool) {
     if (deleteTool === true) {
@@ -259,26 +256,25 @@ function touchPressCallback (e) {
     return;
   }
 
-  for (let i = 0; i < toolData.data.length; i++) {
-    data = toolData.data[i];
-    if (pointNearTool(element, data, coords)) {
-      data.active = true;
-      cornerstone.updateImage(element);
+  const data = toolData.data.find((d) => pointNearTool(element, d, coords));
 
-      element.removeEventListener(EVENTS.TOUCH_DRAG, textMarkerTouch.touchMoveCallback);
-      element.removeEventListener(EVENTS.TOUCH_START_ACTIVE, textMarkerTouch.touchDownActivateCallback);
-      element.removeEventListener(EVENTS.TOUCH_START, textMarkerTouch.touchStartCallback);
-      element.removeEventListener(EVENTS.TAP, textMarkerTouch.tapCallback);
-      element.removeEventListener(EVENTS.TOUCH_PRESS, textMarkerTouch.pressCallback);
-      // Allow relabelling via a callback
-      config.changeTextCallback(data, eventData, doneChangingTextCallback);
+  if (data) {
+    data.active = true;
+    cornerstone.updateImage(element);
 
-      e.stopImmediatePropagation();
-      e.preventDefault();
-      e.stopPropagation();
+    element.removeEventListener(EVENTS.TOUCH_DRAG, textMarkerTouch.touchMoveCallback);
+    element.removeEventListener(EVENTS.TOUCH_START_ACTIVE, textMarkerTouch.touchDownActivateCallback);
+    element.removeEventListener(EVENTS.TOUCH_START, textMarkerTouch.touchStartCallback);
+    element.removeEventListener(EVENTS.TAP, textMarkerTouch.tapCallback);
+    element.removeEventListener(EVENTS.TOUCH_PRESS, textMarkerTouch.pressCallback);
+    // Allow relabelling via a callback
+    config.changeTextCallback(data, eventData, doneChangingTextCallback);
 
-      return;
-    }
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    e.stopPropagation();
+
+    return;
   }
 
   e.preventDefault();

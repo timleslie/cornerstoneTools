@@ -55,11 +55,9 @@ export default function (mouseToolInterface) {
     // And see if we can activate a handle
     let imageNeedsUpdate = false;
 
-    for (let i = 0; i < toolData.data.length; i++) {
+    toolData.data.forEach((data) => {
       // Get the cursor position in canvas coordinates
       const coords = eventData.currentPoints.canvas;
-
-      const data = toolData.data[i];
 
       if (handleActivator(eventData.element, data.handles, coords) === true) {
         imageNeedsUpdate = true;
@@ -70,7 +68,7 @@ export default function (mouseToolInterface) {
         data.active = !data.active;
         imageNeedsUpdate = true;
       }
-    }
+    });
 
     // Handle activation status changed, redraw the image
     if (imageNeedsUpdate === true) {

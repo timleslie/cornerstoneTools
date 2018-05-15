@@ -64,13 +64,7 @@ function newFrameOfReferenceSpecificToolStateManager () {
 
     const toolData = frameOfReferenceToolState[toolType];
     // Find this tool data
-    let indexOfData = -1;
-
-    for (let i = 0; i < toolData.data.length; i++) {
-      if (toolData.data[i] === data) {
-        indexOfData = i;
-      }
-    }
+    const indexOfData = toolData.data.findIndex((d) => d === data);
 
     if (indexOfData !== -1) {
       toolData.data.splice(indexOfData, 1);

@@ -146,19 +146,17 @@ function touchTool (touchToolInterface) {
 
     // Now check to see if we have a tool that we can move
     if (toolData && touchToolInterface.pointNearTool) {
-      for (i = 0; i < toolData.data.length; i++) {
-        data = toolData.data[i];
-        if (touchToolInterface.pointNearTool(element, data, coords)) {
-          element.removeEventListener(EVENTS.TOUCH_START, touchToolInterface.touchStartCallback || touchStartCallback);
-          element.removeEventListener(EVENTS.TAP, touchToolInterface.tapCallback || tapCallback);
-          data.active = true;
-          cornerstone.updateImage(element);
-          touchMoveAllHandles(e, data, toolData, touchToolInterface.toolType, true, doneMovingCallback);
-          e.stopImmediatePropagation();
-          e.preventDefault();
+      data = toolData.data.find((d) => touchToolInterface.pointNearTool(element, d, coords));
+      if (data) {
+        element.removeEventListener(EVENTS.TOUCH_START, touchToolInterface.touchStartCallback || touchStartCallback);
+        element.removeEventListener(EVENTS.TAP, touchToolInterface.tapCallback || tapCallback);
+        data.active = true;
+        cornerstone.updateImage(element);
+        touchMoveAllHandles(e, data, toolData, touchToolInterface.toolType, true, doneMovingCallback);
+        e.stopImmediatePropagation();
+        e.preventDefault();
 
-          return;
-        }
+        return;
       }
     }
 
@@ -243,23 +241,18 @@ function touchTool (touchToolInterface) {
       return;
     }
 
-    for (i = 0; i < toolData.data.length; i++) {
-      data = toolData.data[i];
-
-      if (touchToolInterface.pointNearTool(eventData.element, data, coords)) {
-        element.removeEventListener(EVENTS.TOUCH_START, touchToolInterface.touchStartCallback || touchStartCallback);
-        element.removeEventListener(EVENTS.TAP, touchToolInterface.tapCallback || tapCallback);
-        if (touchToolInterface.pressCallback) {
-          element.removeEventListener(EVENTS.TOUCH_PRESS, touchToolInterface.pressCallback);
-        }
-
-        touchMoveAllHandles(e, data, toolData, touchToolInterface.toolType, true, doneMovingCallback);
-        e.stopImmediatePropagation();
-        e.preventDefault();
-        e.stopPropagation();
-
-        return;
+    data = toolData.data.find((d) => touchToolInterface.pointNearTool(eventData.element, d, coords));
+    if (data) {
+      element.removeEventListener(EVENTS.TOUCH_START, touchToolInterface.touchStartCallback || touchStartCallback);
+      element.removeEventListener(EVENTS.TAP, touchToolInterface.tapCallback || tapCallback);
+      if (touchToolInterface.pressCallback) {
+        element.removeEventListener(EVENTS.TOUCH_PRESS, touchToolInterface.pressCallback);
       }
+
+      touchMoveAllHandles(e, data, toolData, touchToolInterface.toolType, true, doneMovingCallback);
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      e.stopPropagation();
     }
   }
   // /////// END INACTIVE TOOL ///////
