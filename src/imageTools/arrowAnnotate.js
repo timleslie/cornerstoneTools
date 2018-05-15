@@ -154,19 +154,13 @@ function onImageRendered (e) {
   const font = textStyle.getFont();
   const config = arrowAnnotate.getConfiguration();
 
-  for (let i = 0; i < toolData.data.length; i++) {
+  toolData.data.filter((d) => d.visible !== false).forEach((data) => {
     context.save();
 
     if (config && config.shadow) {
       context.shadowColor = config.shadowColor || '#000000';
       context.shadowOffsetX = config.shadowOffsetX || 1;
       context.shadowOffsetY = config.shadowOffsetY || 1;
-    }
-
-    const data = toolData.data[i];
-
-    if (data.visible === false) {
-      continue;
     }
 
     const color = toolColors.getColorIfActive(data);
@@ -235,7 +229,7 @@ function onImageRendered (e) {
         data.handles, textBoxAnchorPoints, color, lineWidth, 0, false);
     }
     context.restore();
-  }
+  });
 
   function textBoxAnchorPoints (handles) {
     const midpoint = {

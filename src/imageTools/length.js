@@ -85,7 +85,7 @@ function onImageRendered (e) {
     colPixelSpacing = image.columnPixelSpacing;
   }
 
-  for (let i = 0; i < toolData.data.length; i++) {
+  toolData.data.filter((d) => d.visible !== false).forEach((data) => {
     context.save();
 
     // Configurable shadow
@@ -93,12 +93,6 @@ function onImageRendered (e) {
       context.shadowColor = config.shadowColor || '#000000';
       context.shadowOffsetX = config.shadowOffsetX || 1;
       context.shadowOffsetY = config.shadowOffsetY || 1;
-    }
-
-    const data = toolData.data[i];
-
-    if (data.visible === false) {
-      continue;
     }
 
     const color = toolColors.getColorIfActive(data);
@@ -169,7 +163,7 @@ function onImageRendered (e) {
     drawLinkedTextBox(context, element, data.handles.textBox, text,
       data.handles, textBoxAnchorPoints, color, lineWidth, xOffset, true);
     context.restore();
-  }
+  });
 
   function textBoxAnchorPoints (handles) {
     const midpoint = {

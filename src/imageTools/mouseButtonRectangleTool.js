@@ -72,10 +72,8 @@ export default function (mouseToolInterface, preventHandleOutsideImage) {
     let imageNeedsUpdate = false;
     const coords = eventData.currentPoints.canvas;
 
-    for (let i = 0; i < toolData.data.length; i++) {
+    toolData.data.forEach((data) => {
       // Get the cursor position in image coordinates
-      const data = toolData.data[i];
-
       if (handleActivator(eventData.element, data.handles, coords) === true) {
         imageNeedsUpdate = true;
       }
@@ -84,7 +82,7 @@ export default function (mouseToolInterface, preventHandleOutsideImage) {
         data.active = !data.active;
         imageNeedsUpdate = true;
       }
-    }
+    });
 
     // Handle activation status changed, redraw the image
     if (imageNeedsUpdate === true) {

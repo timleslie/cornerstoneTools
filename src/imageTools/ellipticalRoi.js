@@ -137,14 +137,8 @@ function onImageRendered (e) {
   context.setTransform(1, 0, 0, 1, 0, 0);
 
   // If we have tool data for this element - iterate over each set and draw it
-  for (let i = 0; i < toolData.data.length; i++) {
+  toolData.data.filter((d) => d.visible !== false).forEach((data) => {
     context.save();
-
-    const data = toolData.data[i];
-
-    if (data.visible === false) {
-      continue;
-    }
 
     // Apply any shadow settings defined in the tool configuration
     if (config && config.shadow) {
@@ -320,7 +314,7 @@ function onImageRendered (e) {
     drawLinkedTextBox(context, element, data.handles.textBox, textLines,
       data.handles, textBoxAnchorPoints, color, lineWidth, 0, true);
     context.restore();
-  }
+  });
 
   function textBoxAnchorPoints (handles) {
     // Retrieve the bounds of the ellipse (left, top, width, and height)

@@ -64,13 +64,8 @@ function onImageRendered (e) {
   const font = textStyle.getFont();
   const fontHeight = textStyle.getFontSize();
 
-  for (let i = 0; i < toolData.data.length; i++) {
+  toolData.data.filter((d) => d.visible !== false).forEach((data) => {
     context.save();
-    const data = toolData.data[i];
-
-    if (data.visible === false) {
-      continue;
-    }
 
     const color = toolColors.getColorIfActive(data);
 
@@ -119,7 +114,7 @@ function onImageRendered (e) {
     drawTextBox(context, str, textCoords.x, textCoords.y + fontHeight + 5, color);
     drawTextBox(context, text, textCoords.x, textCoords.y, color);
     context.restore();
-  }
+  });
 }
 // /////// END IMAGE RENDERING ///////
 

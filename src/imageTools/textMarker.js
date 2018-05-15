@@ -113,13 +113,7 @@ function onImageRendered (e) {
 
   const config = textMarker.getConfiguration();
 
-  for (let i = 0; i < toolData.data.length; i++) {
-    const data = toolData.data[i];
-
-    if (data.visible === false) {
-      continue;
-    }
-
+  toolData.data.filter((d) => d.visible !== false).forEach((data) => {
     const color = toolColors.getColorIfActive(data);
 
     context.save();
@@ -148,7 +142,7 @@ function onImageRendered (e) {
     data.handles.end.boundingBox = drawTextBox(context, data.text, textCoords.x, textCoords.y - 10, color, options);
 
     context.restore();
-  }
+  });
 }
 
 function doubleClickCallback (e) {

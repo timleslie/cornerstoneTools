@@ -81,7 +81,7 @@ function onImageRendered (e) {
   const config = angle.getConfiguration();
   const cornerstone = external.cornerstone;
 
-  for (let i = 0; i < toolData.data.length; i++) {
+  toolData.data.filter((d) => d.visible !== false).forEach((data) => {
     context.save();
 
     // Configurable shadow
@@ -89,12 +89,6 @@ function onImageRendered (e) {
       context.shadowColor = config.shadowColor || '#000000';
       context.shadowOffsetX = config.shadowOffsetX || 1;
       context.shadowOffsetY = config.shadowOffsetY || 1;
-    }
-
-    const data = toolData.data[i];
-
-    if (data.visible === false) {
-      continue;
     }
 
     // Differentiate the color of activation tool
@@ -145,7 +139,7 @@ function onImageRendered (e) {
     context.font = font;
     drawTextBox(context, text, textX, textY, color);
     context.restore();
-  }
+  });
 }
 // /////// END IMAGE RENDERING ///////
 

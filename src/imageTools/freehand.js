@@ -521,10 +521,9 @@ function mouseHover (eventData, toolData) {
   // Check if user is mousing over a point
   let imageNeedsUpdate = false;
 
-  for (let i = 0; i < toolData.data.length; i++) {
+  toolData.data.forEach((data, i) => {
     // Get the cursor position in canvas coordinates
     const coords = eventData.currentPoints.canvas;
-    const data = toolData.data[i];
 
     if (handleActivator(eventData.element, data.handles, coords) === true) {
       imageNeedsUpdate = true;
@@ -542,7 +541,7 @@ function mouseHover (eventData, toolData) {
         imageNeedsUpdate = true;
       }
     }
-  }
+  });
 
   return imageNeedsUpdate;
 }
@@ -595,14 +594,8 @@ function onImageRendered (e) {
   const lineWidth = toolStyle.getToolWidth();
   let fillColor;
 
-  for (let i = 0; i < toolData.data.length; i++) {
+  toolData.data.filter((d) => d.visible !== false).forEach((data) => {
     context.save();
-
-    const data = toolData.data[i];
-
-    if (data.visible === false) {
-      continue;
-    }
 
     const color = toolColors.getColorIfActive(data);
 
@@ -808,7 +801,7 @@ function onImageRendered (e) {
         data.handles, textBoxAnchorPoints, color, lineWidth, 0, true);
     }
     context.restore();
-  }
+  });
 
   function textBoxAnchorPoints (handles) {
     return handles;

@@ -21,16 +21,12 @@ function deactivateAllToolInstances (toolData) {
     return;
   }
 
-  for (let i = 0; i < toolData.data.length; i++) {
-    const data = toolData.data[i];
-
+  toolData.forEach((data) => {
     data.active = false;
-    if (!data.handles) {
-      continue;
+    if (data.handles) {
+      deactivateAllHandles(data.handles);
     }
-
-    deactivateAllHandles(data.handles);
-  }
+  });
 }
 
 function touchTool (touchToolInterface) {

@@ -85,9 +85,8 @@ function onImageRendered (e) {
   const color = 'white';
   const font = textStyle.getFont();
 
-  for (let i = 0; i < toolData.data.length; i++) {
+  toolData.data.forEach((data) => {
     context.save();
-    const data = toolData.data[i];
 
     // Draw the handles
     context.beginPath();
@@ -109,7 +108,7 @@ function onImageRendered (e) {
     drawTextBox(context, `${data.handles.end.x}, ${data.handles.end.y}`, textCoords.x, textCoords.y, color);
 
     context.restore();
-  }
+  });
 }
 // /////// END IMAGE RENDERING ///////
 
